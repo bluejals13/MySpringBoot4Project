@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "my.boot")
 @Getter @Setter
 public class MyBootProperties {
-    private String name;
-    private int age;
-    private String fullName;
+    private String username;
+    private int port;
+    private String description;
 }

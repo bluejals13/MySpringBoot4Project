@@ -10,10 +10,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+	<!-- Artifact ID 수정됨 -->
 	<groupId>com.rookies6</groupId>
-	<artifactId>MySpringBoot4Project</artifactId>
+	<artifactId>MySpringBootLabProject</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>MySpringBoot4Project</name>
+	<name>MySpringBootLabProject</name>
 	<description>My Spring Boot Project</description>
 
 	<properties>
@@ -29,7 +30,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
@@ -97,6 +97,17 @@
 			<optional>true</optional>
 		</dependency>
 
+		<dependency>
+   		 <groupId>org.springframework.boot</groupId>
+   		 <artifactId>spring-boot-configuration-processor</artifactId>
+   		 <optional>true</optional>
+		</dependency>
+		<dependency>
+  		  <groupId>org.projectlombok</groupId>
+  		  <artifactId>lombok</artifactId>
+  		  <optional>true</optional>
+		</dependency>
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -118,24 +129,15 @@
 	</dependencyManagement>
 
 	<build>
-		<plugin>
-  		  <groupId>org.apache.maven.plugins</groupId>
-   		 <artifactId>maven-compiler-plugin</artifactId>
-   		 <configuration>
-    		    <annotationProcessorPaths>
-       		     <path>
-        		        <groupId>org.projectlombok</groupId>
-         		       <artifactId>lombok</artifactId>
-           		 </path>
-      		      <path>
-           		     <groupId>org.springframework.boot</groupId>
-        		        <artifactId>spring-boot-configuration-processor</artifactId>
-        		    </path>
-      		  </annotationProcessorPaths>
-  		  </configuration>
-		</plugin>
+		<plugins> <!-- 누락되었던 태그 추가 -->
+			
+			<!-- Spring Boot 기본 플러그인 추가 (Jar 패키징 및 실행에 필수) -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 
-			<!-- Compiler Plugin (Lombok Annotation Processor) -->
+			<!-- Compiler Plugin (Lombok Annotation Processor) 중복 제거 후 1개만 유지 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -159,6 +161,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.3.1</version>
 			</plugin>
+			
 		</plugins>
 	</build>
 

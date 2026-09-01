@@ -1,0 +1,17 @@
+$ java -jar -Dserver.port=8083 ./target/MySpringBoot4Project-0.0.1-SNAPSHOT.jar --myprop.username=Springfw
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v4.0.8)
+
+2026-09-01T16:45:13.330+09:00  INFO 6925 --- [main] o.s.b.t.TomcatWebServer : Tomcat initialized with port 8083 (http)
+2026-09-01T16:45:16.438+09:00  INFO 6925 --- [main] o.s.b.t.TomcatWebServer : Tomcat started on port 8083 (http)
+2026-09-01T16:45:16.541+09:00  INFO 6925 --- [main] c.r.m.r.MyRunner        : Logger 구현체 클래스명 org.apache.logging.slf4j.Log4jLogger
+arg name = myprop.username
+${myboot.name} = Spring 테스트환경
+MyBootProperties getName() = Spring 테스트환경
+현재 활성화 되어있는 CustomVO= CustomVO(mode=테스트 환경, rate=0.5)

@@ -1,0 +1,36 @@
+
+
+MariaDB [mysql]> SELECT VERSION();
++------------------+
+| VERSION()        |
++------------------+
+| 10.11.18-MariaDB |
++------------------+
+1 row in set (0.001 sec)
+
+MariaDB [mysql]> SELECT @@hostname, @@port;
++-----------------+--------+
+| @@hostname      | @@port |
++-----------------+--------+
+| DESKTOP-12MCCAQ |   3306 |
++-----------------+--------+
+1 row in set (0.001 sec)
+
+MariaDB [mysql]> SELECT USER(), CURRENT_USER();
++----------------+----------------+
+| USER()         | CURRENT_USER() |
++----------------+----------------+
+| root@localhost | root@localhost |
++----------------+----------------+
+1 row in set (0.001 sec)
+
+MariaDB [mysql]> USE lab_db;
+Database changed
+MariaDB [lab_db]>
+MariaDB [lab_db]> SHOW TABLES;
++------------------+
+| Tables_in_lab_db |
++------------------+
+| book             |
++------------------+
+1 row in set (0.001 sec)

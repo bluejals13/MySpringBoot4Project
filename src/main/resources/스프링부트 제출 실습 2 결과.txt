@@ -1,0 +1,109 @@
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 48.50 s -- in com.rookies6.myspringboot4project.MySpringBoot4ProjectApplicationTests
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO]
+[INFO] --- jar:3.4.2:jar (default-jar) @ MySpringBootLabProject ---
+[INFO] Building jar: /mnt/c/Users/user/Desktop/Rookis6/Spring-framework/MySpringBoot4Project/target/MySpringBootLabProject-0.0.1-SNAPSHOT.jar
+[INFO]
+[INFO] --- spring-boot:4.0.8:repackage (repackage) @ MySpringBootLabProject ---
+[INFO] Replacing main artifact /mnt/c/Users/user/Desktop/Rookis6/Spring-framework/MySpringBoot4Project/target/MySpringBootLabProject-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /mnt/c/Users/user/Desktop/Rookis6/Spring-framework/MySpringBoot4Project/target/MySpringBootLabProject-0.0.1-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:06 min
+[INFO] Finished at: 2026-09-02T17:50:59+09:00
+[INFO] ------------------------------------------------------------------------
+user@DESKTOP-12MCCAQ:/mnt/c/Users/user/Desktop/Rookis6/Spring-framework/MySpringBoot4Project$ ./mvnw spring-boot:run
+[INFO] Scanning for projects...
+[WARNING]
+[WARNING] Some problems were encountered while building the effective model for com.rookies6:MySpringBootLabProject:jar:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.springframework.boot:spring-boot-configuration-processor:jar -> duplicate declaration of version (?) @ line 100, column 15
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.projectlombok:lombok:jar -> duplicate declaration of version (?) @ line 105, column 15
+[WARNING]
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING]
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING]
+[INFO]
+[INFO] ----------------< com.rookies6:MySpringBootLabProject >-----------------
+[INFO] Building MySpringBootLabProject 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] >>> spring-boot:4.0.8:run (default-cli) > test-compile @ MySpringBootLabProject >>>
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ MySpringBootLabProject ---
+[INFO] Copying 3 resources from src/main/resources to target/classes
+[INFO] Copying 3 resources from src/main/resources to target/classes
+[INFO]
+[INFO] --- compiler:3.14.1:compile (default-compile) @ MySpringBootLabProject ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ MySpringBootLabProject ---
+[INFO] skip non existing resourceDirectory /mnt/c/Users/user/Desktop/Rookis6/Spring-framework/MySpringBoot4Project/src/test/resources
+[INFO]
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ MySpringBootLabProject ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] <<< spring-boot:4.0.8:run (default-cli) < test-compile @ MySpringBootLabProject <<<
+[INFO]
+[INFO]
+[INFO] --- spring-boot:4.0.8:run (default-cli) @ MySpringBootLabProject ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.8)
+
+2026-09-02T17:51:31.394+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] c.r.m.MySpringBoot4ProjectApplication    : Starting MySpringBoot4ProjectApplication using Java 17.0.20 with PID 20243 (/mnt/c/Users/user/Desktop/Rookis6/Spring-framework/MySpringBoot4Project/target/classes started by user in /mnt/c/Users/user/Desktop/Rookis6/Spring-framework/MySpringBoot4Project)
+2026-09-02T17:51:31.435+09:00 DEBUG 20243 --- [MySpringBoot4Project] [  restartedMain] c.r.m.MySpringBoot4ProjectApplication    : Running with Spring Boot v4.0.8, Spring v7.0.9
+2026-09-02T17:51:31.436+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] c.r.m.MySpringBoot4ProjectApplication    : The following 1 profile is active: "test"
+2026-09-02T17:51:31.584+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-09-02T17:51:31.585+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-09-02T17:51:39.578+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-02T17:51:39.835+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 167 ms. Found 0 JPA repository interfaces.
+2026-09-02T17:51:44.559+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] o.s.b.t.TomcatWebServer                  : Tomcat initialized with port 8080 (http)
+2026-09-02T17:51:44.648+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2026-09-02T17:51:44.648+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-09-02T17:51:44.814+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 13228 ms
+2026-09-02T17:51:46.571+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+2026-09-02T17:51:48.543+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] c.z.h.p.HikariPool                       : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:d-b-1 user=SA
+2026-09-02T17:51:48.563+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+2026-09-02T17:51:48.812+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] o.h.o.jpa                                : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-09-02T17:51:49.704+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] o.h.o.core                               : HHH000001: Hibernate ORM core version 7.2.24.Final
+2026-09-02T17:51:56.802+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-02T17:51:57.909+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] o.h.o.c.pooling                          : HHH10001005: Database info:
+        Database JDBC URL [jdbc:h2:mem:d-b-1]
+        Database driver: H2 JDBC Driver
+        Database dialect: H2Dialect
+        Database version: 2.4.240
+        Default catalog/schema: D-B-1/PUBLIC
+        Autocommit mode: undefined/unknown
+        Isolation level: READ_COMMITTED [default READ_COMMITTED]
+        JDBC fetch size: 100
+        Pool: DataSourceConnectionProvider
+        Minimum pool size: undefined/unknown
+        Maximum pool size: undefined/unknown
+2026-09-02T17:52:02.118+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] o.h.o.core                               : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-02T17:52:02.236+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02T17:52:02.872+09:00  WARN 20243 --- [MySpringBoot4Project] [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-09-02T17:52:04.648+09:00  WARN 20243 --- [MySpringBoot4Project] [  restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-09-02T17:52:06.337+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] o.s.b.a.e.w.EndpointLinksResolver        : Exposing 12 endpoints beneath base path '/actuator'
+2026-09-02T17:52:06.636+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] o.s.b.t.TomcatWebServer                  : Tomcat started on port 8080 (http) with context path '/'
+2026-09-02T17:52:06.659+09:00  INFO 20243 --- [MySpringBoot4Project] [  restartedMain] c.r.m.MySpringBoot4ProjectApplication    : Started MySpringBoot4ProjectApplication in 39.146 seconds (process running for 42.932)
+2026-09-02T17:52:36.458+09:00  INFO 20243 --- [MySpringBoot4Project] [nio-8080-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-02T17:52:36.459+09:00  INFO 20243 --- [MySpringBoot4Project] [nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2026-09-02T17:52:36.461+09:00  INFO 20243 --- [MySpringBoot4Project] [nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 2 ms
+
+
+
+

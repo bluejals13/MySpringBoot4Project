@@ -1,7 +1,14 @@
 package com.rookies6.myspringboot4project.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -21,10 +28,9 @@ public class Book {
 
     private String author;
 
-    @Column(unique = true)
     private String isbn;
 
-    private LocalDate publishDate;
+    private int price;
 
-    private Integer price;
+    private LocalDate publishDate;
 }

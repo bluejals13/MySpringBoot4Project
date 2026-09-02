@@ -1,0 +1,44 @@
+
+
+GET:
+http://localhost:8080/api/books
+
+Body:
+[]
+
+---
+
+POST:
+http://localhost:8080/api/books
+
+Body:
+{
+  "title": "스프링 부트 입문",
+  "author": "홍길동",
+  "isbn": "9788956746425",
+  "price": 30000,
+  "publishDate": "2025-05-07"
+}
+
+
+---
+
+GET:
+http://localhost:8080/api/books
+
+Body:
+[
+    {
+        "id": 1,
+        "title": "스프링 부트 입문",
+        "author": "홍길동",
+        "isbn": "9788956746425",
+        "price": 30000,
+        "publishDate": "2025-05-07"
+    }
+]
+
+---
+
+
+

@@ -1,11 +1,12 @@
 package com.rookies6.myspringboot4project.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
@@ -13,17 +14,19 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Getter
 @Setter
-@ToString
-@DynamicUpdate
 public class User {
-    @Id 
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
+    @NotEmpty(message = "Name(이름)은 필수 입력 항목입니다.")
     private String name;
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Email 주소는 필수 입력 항목입니다.")
+    @Email
     private String email;
 
     @Column(nullable = false)

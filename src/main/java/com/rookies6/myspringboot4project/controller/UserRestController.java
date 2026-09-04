@@ -18,31 +18,31 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserRestController {
-
     private final UserRepository userRepository;
 
+    //Constructor Injection - Mock 객체 주입이 가능
+//    public UserRestController(UserRepository userRepository) {
+//        log.info("UserRepository 구현 클래스명 = {}", userRepository.getClass().getName());
+//        this.userRepository = userRepository;
+//    }
+
     @PostMapping
-    public User createUser(@RequestBody User userDetail) {
+    public User createUser(@RequestBody User userDetail){
         return userRepository.save(userDetail);
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
-
-        Optional<User> optionalUser =
-                userRepository.findById(id);
-
-        return getUser(optionalUser);
+        Optional<User> optionalUser = userRepository.findById(id);//Optional<User>
+        //orElseThrow(Supplier) Supplier의 추상메서드 () -> T
+        User existUser = getUser(optionalUser);
+        return existUser;
     }
 
     private static User getUser(Optional<User> optionalUser) {
-
-        return optionalUser.orElseThrow(
-                () -> new BusinessException(
-                        "User Not Found",
-                        HttpStatus.NOT_FOUND
-                )
-        );
+        User existUser = optionalUser.orElseThrow(
+                () -> new BusinessException("User Not Found", HttpStatus.NOT_FOUND));
+        return existUser;
     }
 
     @GetMapping
@@ -51,57 +51,30 @@ public class UserRestController {
     }
 
     @GetMapping("/{email}/")
-    public User getUserByEmail(@PathVariable String email) {
-
-        return getUser(
-                userRepository.findByEmail(email)
-        );
+    public User getUserByEmail(@PathVariable String email){
+        User existUser = getUser(userRepository.findByEmail(email));
+        return existUser;
     }
 
     @PatchMapping("/{email}/")
-    public User updateUser(
-    @PathVariable String email,
-    @RequestBody User userDetail) {
-
-        User existUser =
-        getUser(userRepository.findByEmail(email));
-
-        if (userDetail.getPassword() != null) {
-
-            existUser.setPassword(
-                userDetail.getPassword()
-            );
-        }
-
-        if (userDetail.getName() != null) {
-
-            existUser.setName(
-                userDetail.getName()
-            );
-        }
-
+    public User updateUser(@PathVariable String email,@RequestBody User userDetail) {
+        User existUser = getUser(userRepository.findByEmail(email));
+        //setter method 호출
+        existUser.setName(userDetail.getName());
+        //save()를 호출해야 update Query가 처리됨
         return userRepository.save(existUser);
     }
 
-    @DeleteMapping("/{id}/")
-    public ResponseEntity<String> deleteUser(
-            @PathVariable Long id) {
-
-        User existUser =
-                getUser(userRepository.findById(id));
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id){
+        User existUser = getUser(userRepository.findById(id));
         userRepository.delete(existUser);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("User Deleted");
+        return ResponseEntity.ok("Id = " + id + " User가 삭제 되었습니다.");
     }
 
     @DeleteMapping("/all/")
     public ResponseEntity<String> deleteAllUsers() {
-
         userRepository.deleteAll();
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body("All Users Deleted");

@@ -1,20 +1,18 @@
 package com.rookies6.myspringboot4project.exception;
 
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
-@Getter
-public class BusinessException extends RuntimeException {	
-    private static final long serialVersionUID = 1L;
-    private String message;
-    private HttpStatus httpStatus;
 
-    public BusinessException(String message) {
-        //417
-        this(message, HttpStatus.EXPECTATION_FAILED);
+@Getter
+public class BusinessException extends RuntimeException {
+
+    private final ErrorCode errorCode;
+
+    public BusinessException(ErrorCode errorCode, Object... args) {
+        super(errorCode.getMessage(args));
+        this.errorCode = errorCode;
     }
 
-    public BusinessException(String message, HttpStatus httpStatus) {
-        this.message = message;
-        this.httpStatus = httpStatus;
-    }    
+    public org.springframework.http.HttpStatus getHttpStatus() {
+        return errorCode.getHttpStatus();
+    }
 }

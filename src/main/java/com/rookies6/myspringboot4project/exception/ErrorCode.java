@@ -7,22 +7,22 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     RESOURCE_NOT_FOUND(
-            "Resource not found",
+            "해당 자원을 찾을 수 없습니다.",
             HttpStatus.NOT_FOUND
     ),
 
     STUDENT_NUMBER_DUPLICATE(
-            "Student number already exists: %s",
+            "이미 존재하는 학번입니다: %s",
             HttpStatus.CONFLICT
     ),
 
     INVALID_INPUT(
-            "Invalid input",
+            "입력값이 올바르지 않습니다.",
             HttpStatus.BAD_REQUEST
     ),
 
     INTERNAL_SERVER_ERROR(
-            "Internal server error",
+            "서버 오류가 발생했습니다.",
             HttpStatus.INTERNAL_SERVER_ERROR
     );
 

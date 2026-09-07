@@ -4,7 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
@@ -16,12 +15,6 @@ public class MySpringBoot4ProjectApplication {
                 new SpringApplication(MySpringBoot4ProjectApplication.class);
 
         application.setWebApplicationType(WebApplicationType.SERVLET);
-
         application.run(args);
-    }
-
-    @Bean
-    public String myBean() {
-        return "Hello Bean";
     }
 }

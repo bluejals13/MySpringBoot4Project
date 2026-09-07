@@ -15,3 +15,5 @@
 * 메모리 사용량 확인
 * DB connection pool 모니터링
 * 
+## Spring Boot Thymeleaf 활용
+* 학생 CRUD 기능

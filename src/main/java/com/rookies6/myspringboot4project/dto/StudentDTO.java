@@ -16,12 +16,12 @@ public class StudentDTO {
     @Builder
     public static class Request {
 
-        @NotBlank(message = "Student name is required")
-        @Size(max = 100, message = "Student name cannot exceed 100 characters")
+        @NotBlank(message = "이름은 필수입니다.")
+        @Size(max = 100, message = "이름은 100자를 초과할 수 없습니다.")
         private String name;
 
-        @NotBlank(message = "Student number is required")
-        @Size(max = 20, message = "Student number cannot exceed 20 characters")
+        @NotBlank(message = "학번은 필수입니다.")
+        @Size(max = 20, message = "학번은 20자를 초과할 수 없습니다.")
         private String studentNumber;
     }
 

@@ -22,9 +22,9 @@ public class DataInitRunner implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        
         log.info("Starting data initialization...");
 
-        // 데이터가 없을 때만 초기 데이터 생성
         if (studentRepository.count() == 0) {
             createStudents();
         } else {

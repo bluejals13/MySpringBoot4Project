@@ -23,14 +23,15 @@ import java.util.Map;
 public class DefaultExceptionAdvice {
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ErrorObject> handleResourceNotFoundException(BusinessException ex) {
+    public ResponseEntity<ErrorObject> handleBusinessException(BusinessException ex) {
+        ErrorCode errorCode = ex.getErrorCode();
         ErrorObject errorObject = new ErrorObject();
-        errorObject.setStatusCode(ex.getHttpStatus().value());
+        errorObject.setStatusCode(errorCode.getHttpStatus().value());
         errorObject.setMessage(ex.getMessage());
 
-        log.error(ex.getMessage(), ex);
+        log.error("{} : {}", errorCode.name(), errorCode.getMessage(), ex);
 
-        return new ResponseEntity<ErrorObject>(errorObject, HttpStatusCode.valueOf(ex.getHttpStatus().value()));
+        return new ResponseEntity<ErrorObject>(errorObject, HttpStatusCode.valueOf(errorCode.getHttpStatus().value()));
     }
 
     /*

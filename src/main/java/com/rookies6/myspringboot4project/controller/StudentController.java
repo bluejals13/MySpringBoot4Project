@@ -50,8 +50,7 @@ public class StudentController {
         StudentDTO.Response createdStudent =
                 studentService.createStudent(request);
 
-        // HttpStatus.CREATED = 201
-        return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
+        return ResponseEntity.ok(createdStudent);
     }
 
     @PutMapping("/{id}")
@@ -66,10 +65,9 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudent(
-            @PathVariable Long id) {
+    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
 
         studentService.deleteStudent(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

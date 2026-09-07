@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,9 +25,13 @@ public class User {
     private String name;
 
     @Column(unique = true, nullable = false)
-    @NotBlank(message = "Email 주소는 필수 입력 항목입니다.")
+    @NotBlank(message = "Email(이메일)은 필수 입력 항목입니다.")
     @Email
     private String email;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Password(비밀번호)는 필수 입력 항목입니다.")
+    private String password;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

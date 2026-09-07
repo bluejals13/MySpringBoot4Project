@@ -18,6 +18,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserRepository userRepository;
 
     @GetMapping("/thymeleaf")
@@ -26,13 +27,11 @@ public class UserController {
         return "leaf";
     }
 
-    /*
-     * public ModelAndView(String viewName, String modelName, Object modelObject)
-     */
-    @GetMapping("/index")
+    // / 와 /index 둘 다 User List를 보여줌
+    @GetMapping({"/", "/index"})
     public ModelAndView userList() {
         List<User> userList = userRepository.findAll();
-        return new ModelAndView("index","users",userList);
+        return new ModelAndView("index", "users", userList);
     }
 
     @GetMapping("/signup")
@@ -40,43 +39,48 @@ public class UserController {
         return "add-user";
     }
 
-    //입력항목을 검증하고 등록처리를 하는 메서드
     @PostMapping("/adduser")
-    public String addUser(@Valid @ModelAttribute("userForm") User user,
-                          BindingResult result, Model model) {
+    public String addUser(
+            @Valid @ModelAttribute("userForm") User user,
+            BindingResult result,
+            Model model) {
+
         if (result.hasErrors()) {
             return "add-user";
         }
+
         userRepository.save(user);
 
-//        model.addAttribute("users", userRepository.findAll());
-//        return "index";
         return "redirect:/index";
     }
 
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") long id, Model model) {
+    public String showUpdateForm(
+            @PathVariable("id") long id,
+            Model model) {
+
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Invalid user Id:" + id));
+
         model.addAttribute("userForm", user);
+
         return "update-user";
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable("id") long id,
-                             @Valid @ModelAttribute("userForm") User user,
-                             BindingResult result) {
+    public String updateUser(
+            @PathVariable("id") long id,
+            @Valid @ModelAttribute("userForm") User user,
+            BindingResult result) {
+
         if (result.hasErrors()) {
             user.setId(id);
             return "update-user";
         }
-        userRepository.save(user);
-        return "redirect:/index";
-    }
 
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
+        userRepository.save(user);
+
         return "redirect:/index";
     }
 }

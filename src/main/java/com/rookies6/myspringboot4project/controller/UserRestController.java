@@ -2,10 +2,10 @@ package com.rookies6.myspringboot4project.controller;
 
 import com.rookies6.myspringboot4project.entity.User;
 import com.rookies6.myspringboot4project.exception.BusinessException;
+import com.rookies6.myspringboot4project.repository.CustomerRepository;
 import com.rookies6.myspringboot4project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -70,26 +70,5 @@ public class UserRestController {
         User existUser = getUser(userRepository.findById(id));
         userRepository.delete(existUser);
         return ResponseEntity.ok("Id = " + id + " User가 삭제 되었습니다.");
-    }
-
-    @DeleteMapping("/all/")
-    public ResponseEntity<String> deleteAllUsers() {
-        userRepository.deleteAll();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("All Users Deleted");
-    }
-
-    @GetMapping("/page/{pageNo}/")
-    public ResponseEntity<String> getUsers(
-            @PathVariable int pageNo) {
-
-        Pageable pageable = Pageable
-                .ofSize(10)
-                .withPage(pageNo);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("Current Page replace by Pageable");
     }
 }

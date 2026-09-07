@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     Optional<Book> findByIsbn(String isbn);
+    
+    boolean existsByIsbn(String isbn); // Service에서 중복 체크용으로 사용
 
     List<Book> findByAuthor(String author);
 }

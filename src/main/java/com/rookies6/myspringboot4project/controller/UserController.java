@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -30,12 +27,20 @@ public class UserController {
     // / 와 /index 둘 다 User List를 보여줌
     @GetMapping({"/", "/index"})
     public ModelAndView userList() {
+
         List<User> userList = userRepository.findAll();
-        return new ModelAndView("index", "users", userList);
+
+        return new ModelAndView(
+                "index",
+                "users",
+                userList
+        );
     }
 
     @GetMapping("/signup")
-    public String showSignUpForm(@ModelAttribute("userForm") User user) {
+    public String showSignUpForm(
+            @ModelAttribute("userForm") User user) {
+
         return "add-user";
     }
 
@@ -61,7 +66,9 @@ public class UserController {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("Invalid user Id:" + id));
+                        new IllegalArgumentException(
+                                "Invalid user Id:" + id
+                        ));
 
         model.addAttribute("userForm", user);
 
@@ -71,15 +78,24 @@ public class UserController {
     @PostMapping("/update/{id}")
     public String updateUser(
             @PathVariable("id") long id,
-            @Valid @ModelAttribute("userForm") User user,
+            @Valid @ModelAttribute("userForm") User userForm,
             BindingResult result) {
 
         if (result.hasErrors()) {
-            user.setId(id);
+            userForm.setId(id);
             return "update-user";
         }
 
-        userRepository.save(user);
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Invalid user Id:" + id
+                        ));
+
+        existingUser.setName(userForm.getName());
+        existingUser.setEmail(userForm.getEmail());
+
+        userRepository.save(existingUser);
 
         return "redirect:/index";
     }

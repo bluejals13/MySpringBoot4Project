@@ -1,3 +1,4 @@
+
 package com.rookies6.myspringboot4project.service;
 
 import com.rookies6.myspringboot4project.controller.dto.StudentDTO;
@@ -18,81 +19,225 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
+
+    // =========================================================
+    // 기존 Student CRUD
+    // =========================================================
+
+    /**
+     * 전체 학생 조회
+     */
     public List<StudentDTO.Response> getAllStudents() {
+
         return studentRepository.findAll()
-                //List<Student> => Stream<Student>
                 .stream()
-                //Stream<Student> => Stream<StudentDTO.Response>
-                .map(entity -> StudentDTO.Response.fromEntity(entity))
-                //.map(StudentDTO.Response::fromEntity)
-                //Stream<StudentDTO.Response> => List<StudentDTO.Response>
+                .map(StudentDTO.Response::fromEntity)
                 .toList();
     }
 
+
+    /**
+     * ID로 학생 조회
+     */
     public StudentDTO.Response getStudentById(Long id) {
+
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND,
-                        "Student", "id", id));
+                .orElseThrow(() -> new BusinessException(
+                        ErrorCode.RESOURCE_NOT_FOUND,
+                        "Student",
+                        "id",
+                        id
+                ));
+
         return StudentDTO.Response.fromEntity(student);
     }
 
-    public StudentDTO.Response getStudentByStudentNumber(String studentNumber) {
-        Student student = studentRepository.findByStudentNumber(studentNumber)
-                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND,
-                        "Student", "student number", studentNumber));
+
+    /**
+     * 학번으로 학생 조회
+     */
+    public StudentDTO.Response getStudentByStudentNumber(
+            String studentNumber) {
+
+        Student student = studentRepository
+                .findByStudentNumber(studentNumber)
+                .orElseThrow(() -> new BusinessException(
+                        ErrorCode.RESOURCE_NOT_FOUND,
+                        "Student",
+                        "student number",
+                        studentNumber
+                ));
+
         return StudentDTO.Response.fromEntity(student);
     }
 
+
+    /**
+     * 학생 생성
+     */
     @Transactional
-    public StudentDTO.Response createStudent(StudentDTO.Request request) {
-        // Validate student number is not already in use
-        if (studentRepository.existsByStudentNumber(request.getStudentNumber())) {
-            throw new BusinessException(ErrorCode.STUDENT_NUMBER_DUPLICATE,
-                    request.getStudentNumber());
+    public StudentDTO.Response createStudent(
+            StudentDTO.Request request) {
+
+        if (studentRepository.existsByStudentNumber(
+                request.getStudentNumber())) {
+
+            throw new BusinessException(
+                    ErrorCode.STUDENT_NUMBER_DUPLICATE,
+                    request.getStudentNumber()
+            );
         }
 
-        // Create student 엔티티 생성
         Student student = Student.builder()
-                .name(request.getName())  //이름
-                .studentNumber(request.getStudentNumber())  //학번
+                .name(request.getName())
+                .studentNumber(request.getStudentNumber())
                 .build();
 
         Student savedStudent = studentRepository.save(student);
-        // Student를 StudentDTO.Response 로 변환
+
         return StudentDTO.Response.fromEntity(savedStudent);
     }
 
-    @Transactional
-    public StudentDTO.Response updateStudent(Long id, StudentDTO.Request request) {
-        // Find the student
-        Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND,
-                        "Student", "id", id));
 
-        // 저장된 학번(student.getStudentNumber())과 요청한 학번(request.getStudentNumber())이 일치하지 않으면
-        if (!student.getStudentNumber().equals(request.getStudentNumber()) &&
-                //요청한 학번이 중복되는지 체크하기 위해서 해당학번으로 Student 조회
-                studentRepository.existsByStudentNumber(request.getStudentNumber())) {
-            throw new BusinessException(ErrorCode.STUDENT_NUMBER_DUPLICATE,
-                    request.getStudentNumber());
+    /**
+     * 학생 수정
+     */
+    @Transactional
+    public StudentDTO.Response updateStudent(
+            Long id,
+            StudentDTO.Request request) {
+
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(
+                        ErrorCode.RESOURCE_NOT_FOUND,
+                        "Student",
+                        "id",
+                        id
+                ));
+
+        if (!student.getStudentNumber().equals(
+                request.getStudentNumber())
+                &&
+                studentRepository.existsByStudentNumber(
+                        request.getStudentNumber())) {
+
+            throw new BusinessException(
+                    ErrorCode.STUDENT_NUMBER_DUPLICATE,
+                    request.getStudentNumber()
+            );
         }
 
-        // Update student basic info
         student.setName(request.getName());
         student.setStudentNumber(request.getStudentNumber());
 
-        // Save and return updated student
-//        Student updatedStudent = studentRepository.save(student);
-//        return StudentDTO.Response.fromEntity(updatedStudent);
         return StudentDTO.Response.fromEntity(student);
     }
 
+
+    /**
+     * 학생 삭제
+     */
     @Transactional
     public void deleteStudent(Long id) {
+
         if (!studentRepository.existsById(id)) {
-            throw new BusinessException(ErrorCode.RESOURCE_NOT_FOUND,
-                    "Student", "id", id);
+
+            throw new BusinessException(
+                    ErrorCode.RESOURCE_NOT_FOUND,
+                    "Student",
+                    "id",
+                    id
+            );
         }
+
         studentRepository.deleteById(id);
     }
+
+
+    // =========================================================
+    // JPA Query Lab
+    // =========================================================
+
+    /**
+     * ① 기본 findById()
+     *
+     * Student만 기본 조회한다.
+     *
+     * studentDetail은 LAZY이므로
+     * 이후 접근할 때 추가 SELECT가 발생할 수 있다.
+     */
+    public Student getStudentForBasic(Long id) {
+
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(
+                        ErrorCode.RESOURCE_NOT_FOUND,
+                        "Student",
+                        "id",
+                        id
+                ));
+    }
+
+
+    /**
+     * ② JOIN FETCH
+     *
+     * Student와 StudentDetail을
+     * INNER JOIN FETCH로 함께 조회한다.
+     */
+    public Student getStudentUsingJoinFetch(Long id) {
+
+        return studentRepository
+                .findByIdWithJoinFetch(id)
+                .orElseThrow(() -> new BusinessException(
+                        ErrorCode.RESOURCE_NOT_FOUND,
+                        "Student",
+                        "id",
+                        id
+                ));
+    }
+
+
+    /**
+     * ③ LEFT JOIN FETCH
+     *
+     * StudentDetail이 없어도
+     * Student는 조회한다.
+     */
+    public Student getStudentUsingLeftJoinFetch(Long id) {
+
+        return studentRepository
+                .findByIdWithLeftJoinFetch(id)
+                .orElseThrow(() -> new BusinessException(
+                        ErrorCode.RESOURCE_NOT_FOUND,
+                        "Student",
+                        "id",
+                        id
+                ));
+    }
+
+
+    /**
+     * ④ findAll()
+     *
+     * N+1 문제를 관찰하기 위한 실습용 조회.
+     */
+    public List<Student> getStudentsUsingFindAll() {
+
+        return studentRepository.findAll();
+    }
+
+
+    /**
+     * ⑤ LEFT JOIN FETCH 전체 조회
+     *
+     * Student와 StudentDetail을
+     * 한 번에 조회하여 N+1 문제를 개선한다.
+     */
+    public List<Student> getStudentsUsingLeftJoinFetch() {
+
+        return studentRepository.findAllWithLeftJoinFetch();
+    }
+
+   
+
 }

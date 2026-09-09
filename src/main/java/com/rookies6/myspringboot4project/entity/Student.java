@@ -3,23 +3,30 @@ package com.rookies6.myspringboot4project.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-//Student
 @Entity
 @Table(name = "students")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter @Setter
+@Getter
+@Setter
 public class Student {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")
     private Long id;
-    
+
     @Column(nullable = false)
     private String name;
-    
+
     @Column(unique = true, nullable = false)
     private String studentNumber;
+
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            mappedBy = "student",
+            cascade = CascadeType.ALL
+    )
+    private StudentDetail studentDetail;
 }

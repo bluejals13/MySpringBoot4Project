@@ -16,6 +16,16 @@ public enum ErrorCode {
             HttpStatus.CONFLICT
     ),
 
+    EMAIL_DUPLICATE(
+            "이미 사용 중인 이메일입니다: %s",
+            HttpStatus.CONFLICT
+    ),
+
+    PHONE_NUMBER_DUPLICATE(
+            "이미 사용 중인 전화번호입니다: %s",
+            HttpStatus.CONFLICT
+    ),
+
     INVALID_INPUT(
             "입력값이 올바르지 않습니다.",
             HttpStatus.BAD_REQUEST

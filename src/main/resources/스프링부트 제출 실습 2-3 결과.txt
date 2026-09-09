@@ -1,0 +1,121 @@
+user@DESKTOP-12MCCAQ:/mnt/c/Users/user$ \
+>
+> # ============================================================
+# [실습2-4] Book - BookDetail 1:1 연관관계 API 테스트
+# ============================================================
+
+# 1. 전체 도서 조회
+# GET /api/books
+# → 등록된 모든 Book과 BookDetail 조회
+echo ""
+echo "===== 1. 전체 도서 조회 ====="
+curl -s http://localhost:8080/api/books
+echo ""
+
+# 2. ID로 도서 조회
+# GET /api/books/4
+# → Clean Code 조회
+echo ""
+echo "===== 2. ID로 도서 조회 ====="
+curl -s http://localhost:8080/api/books/4
+echo ""
+
+# 3. ISBN으로 도서 조회
+# GET /api/books/isbn/9780132350884
+# → ISBN으로 Clean Code 조회
+echo ""
+echo "===== 3. ISBN으로 도서 조회 ====="
+curl -s http://localhost:8080/api/books/isbn/9780132350884
+echo ""
+
+# 4. 저자로 도서 검색
+# GET /api/books/search/author?author=Robert
+# → Robert가 포함된 저자 검색
+echo ""
+echo "===== 4. 저자로 도서 검색 ====="
+curl -s "http://localhost:8080/api/books/search/author?author=Robert"
+echo ""
+
+# 5. 제목으로 도서 검색
+# GET /api/books/search/title?title=Clean
+# → Clean이 포함된 제목 검색
+echo ""
+echo "===== 5. 제목으로 도서 검색 ====="
+curl -s "http://localhost:8080/api/books/search/title?title=Clean"
+echo ""
+
+# 6. Book 부분 수정 - 제목
+# PATCH /api/books/4
+# → 제목만 변경하고 나머지 필드는 유지
+echo ""
+echo "===== 6. Book PATCH - 제목만 수정 ====="
+curl -s -X PATCH http://localhost:8080/api/books/4 \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Clean Code 수정본"}'
+echo ""
+
+# 7. Book 부분 수정 - 가격 + BookDetail 언어
+# PATCH /api/books/4
+# → price와 detailRequest.language만 변경
+echo ""
+echo "===== 7. Book PATCH - 가격 + 언어 수정 ====="
+curl -s -X PATCH http://localhost:8080/api/books/4 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "price":15000,
+    "detailRequest":{
+      "language":"Korean"
+    }
+  }'
+echo ""
+
+# 8. BookDetail 부분 수정
+# PATCH /api/books/4/detail
+# → BookDetail의 description만 변경
+echo ""
+echo "===== 8. BookDetail PATCH - 설명만 수정 ====="
+curl -s -X PATCH http://localhost:8080/api/books/4/detail \
+  -H "Content-Type: application/json" \
+  -d '{"description":"새로운 책 설명"}'
+echo ""
+
+# 9. 최종 조회
+# → PATCH 결과가 실제로 반영되었는지 확인
+echo ""
+echo "===== 9. 최종 결과 확인 ====="
+curl -s http://localhost:8080/api/books/4
+echo ""
+
+# 10. DB 데이터 확인
+# → Book과 BookDetail의 1:1 관계 확인
+echo ""
+echo "===== 테스트 완료 ====="
+
+===== 1. 전체 도서 조회 =====
+[{"id":1,"title":"새로운 제목","author":"김돌쇠","isbn":"923-47-725257-31-3","price":19000,"publishDate":"2025-06-15","detailResponse":null},{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}]
+
+===== 2. ID로 도서 조회 =====
+{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
+
+===== 3. ISBN으로 도서 조회 =====
+{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
+
+===== 4. 저자로 도서 검색 =====
+[{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}]
+
+===== 5. 제목으로 도서 검색 =====
+[{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}]
+
+===== 6. Book PATCH - 제목만 수정 =====
+{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
+
+===== 7. Book PATCH - 가격 + 언어 수정 =====
+{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
+
+===== 8. BookDetail PATCH - 설명만 수정 =====
+{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
+
+===== 9. 최종 결과 확인 =====
+{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
+
+===== 테스트 완료 =====

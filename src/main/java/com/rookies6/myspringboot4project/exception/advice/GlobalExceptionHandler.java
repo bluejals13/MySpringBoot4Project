@@ -1,7 +1,6 @@
 package com.rookies6.myspringboot4project.exception.advice;
 
 import com.rookies6.myspringboot4project.exception.BusinessException;
-import com.rookies6.myspringboot4project.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,43 +8,126 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 1. @Valid 유효성 검사 실패 (400)
+    // =========================
+    // @Valid 검증 실패
+    // =========================
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse<Void>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        String errorMessage = ex.getBindingResult().getFieldErrors().stream()
-                .findFirst()
-                .map(err -> err.getDefaultMessage())
-                .orElse("잘못된 요청 파라미터입니다.");
-        log.warn("Validation Error: {}", errorMessage);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.error(errorMessage));
+    public ResponseEntity<Map<String, Object>> handleValidationExceptions(
+            MethodArgumentNotValidException ex
+    ) {
+
+        Map<String, String> errors = new LinkedHashMap<>();
+
+        ex.getBindingResult()
+                .getFieldErrors()
+                .forEach(error ->
+                        errors.put(
+                                error.getField(),
+                                error.getDefaultMessage()
+                        )
+                );
+
+        log.warn("Validation Error: {}", errors);
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("message", "입력값이 올바르지 않습니다.");
+        response.put("errors", errors);
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(response);
     }
 
-    // 2. 잘못된 인자 예외 (400)
+
+    // =========================
+    // 잘못된 인자
+    // =========================
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse<Void>> handleIllegalArgumentException(IllegalArgumentException ex) {
+    public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(
+            IllegalArgumentException ex
+    ) {
+
         log.warn("Illegal Argument: {}", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.error(ex.getMessage()));
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("message", ex.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(response);
     }
 
-    // 3. 직접 정의한 비즈니스 예외 처리 (BookService 등에서 발생)
+
+    // =========================
+    // BusinessException
+    // =========================
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ErrorResponse<Void>> handleBusinessException(BusinessException ex) {
-        log.warn("Business Exception: {}", ex.getMessage());
-        return ResponseEntity.status(ex.getHttpStatus())
-                .body(ErrorResponse.error(ex.getMessage()));
+    public ResponseEntity<Map<String, Object>> handleBusinessException(
+            BusinessException ex
+    ) {
+
+        log.warn(
+                "Business Exception [{}]: {}",
+                ex.getErrorCode(),
+                ex.getMessage()
+        );
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put(
+                "status",
+                ex.getErrorCode()
+                        .getHttpStatus()
+                        .value()
+        );
+
+        response.put(
+                "message",
+                ex.getMessage()
+        );
+
+        return ResponseEntity
+                .status(ex.getErrorCode().getHttpStatus())
+                .body(response);
     }
 
-    // 4. 그 외 모든 서버 내부 예외 (500)
+
+    // =========================
+    // 기타 서버 오류
+    // =========================
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse<Void>> handleAllExceptions(Exception ex) {
-        log.error("Internal Server Error: ", ex);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ErrorResponse.error("서버 내부 오류가 발생했습니다. 관리자에게 문의하세요."));
+    public ResponseEntity<Map<String, Object>> handleAllExceptions(
+            Exception ex
+    ) {
+
+        log.error(
+                "Internal Server Error: ",
+                ex
+        );
+
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put(
+                "status",
+                HttpStatus.INTERNAL_SERVER_ERROR.value()
+        );
+
+        response.put(
+                "message",
+                "서버 내부 오류가 발생했습니다. 관리자에게 문의하세요."
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(response);
     }
 }

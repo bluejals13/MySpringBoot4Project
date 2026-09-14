@@ -14,4 +14,22 @@ public class BookDetailDTO {
     private String publisher;
     private String coverImageUrl;
     private String edition;
+
+
+    // =========================
+    // BookDetail PATCH Request
+    // =========================
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class PatchRequest {
+
+        private String description;
+        private String language;
+        private Integer pageCount;
+        private String publisher;
+        private String coverImageUrl;
+        private String edition;
+    }
 }

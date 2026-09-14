@@ -1,121 +1,352 @@
-user@DESKTOP-12MCCAQ:/mnt/c/Users/user$ \
->
-> # ============================================================
-# [실습2-4] Book - BookDetail 1:1 연관관계 API 테스트
-# ============================================================
 
-# 1. 전체 도서 조회
-# GET /api/books
-# → 등록된 모든 Book과 BookDetail 조회
-echo ""
-echo "===== 1. 전체 도서 조회 ====="
+##
+## 1. 전체 API 한 번에 테스트
+##
+
+echo "========================================"
+echo " Spring Boot API 전체 테스트"
+echo "========================================"
+
+echo
+echo "===== 1. 현재 Publisher 전체 조회 ====="
+curl -s http://localhost:8080/api/publishers
+echo
+echo
+
+echo "===== 2. 현재 Book 전체 조회 ====="
 curl -s http://localhost:8080/api/books
-echo ""
+echo
+echo
 
-# 2. ID로 도서 조회
-# GET /api/books/4
-# → Clean Code 조회
-echo ""
-echo "===== 2. ID로 도서 조회 ====="
-curl -s http://localhost:8080/api/books/4
-echo ""
 
-# 3. ISBN으로 도서 조회
-# GET /api/books/isbn/9780132350884
-# → ISBN으로 Clean Code 조회
-echo ""
-echo "===== 3. ISBN으로 도서 조회 ====="
-curl -s http://localhost:8080/api/books/isbn/9780132350884
-echo ""
+echo "========================================"
+echo " GET 테스트"
+echo "========================================"
 
-# 4. 저자로 도서 검색
-# GET /api/books/search/author?author=Robert
-# → Robert가 포함된 저자 검색
-echo ""
-echo "===== 4. 저자로 도서 검색 ====="
-curl -s "http://localhost:8080/api/books/search/author?author=Robert"
-echo ""
+echo
+echo "===== 3. Publisher ID=1 조회 ====="
+curl -s http://localhost:8080/api/publishers/1
+echo
+echo
 
-# 5. 제목으로 도서 검색
-# GET /api/books/search/title?title=Clean
-# → Clean이 포함된 제목 검색
-echo ""
-echo "===== 5. 제목으로 도서 검색 ====="
-curl -s "http://localhost:8080/api/books/search/title?title=Clean"
-echo ""
+echo "===== 4. Publisher ID=2 조회 ====="
+curl -s http://localhost:8080/api/publishers/2
+echo
+echo
 
-# 6. Book 부분 수정 - 제목
-# PATCH /api/books/4
-# → 제목만 변경하고 나머지 필드는 유지
-echo ""
-echo "===== 6. Book PATCH - 제목만 수정 ====="
-curl -s -X PATCH http://localhost:8080/api/books/4 \
-  -H "Content-Type: application/json" \
-  -d '{"title":"Clean Code 수정본"}'
-echo ""
+echo "===== 5. Publisher 이름 조회 ====="
+curl -s "http://localhost:8080/api/publishers/name/O%27Reilly%20Media"
+echo
+echo
 
-# 7. Book 부분 수정 - 가격 + BookDetail 언어
-# PATCH /api/books/4
-# → price와 detailRequest.language만 변경
-echo ""
-echo "===== 7. Book PATCH - 가격 + 언어 수정 ====="
-curl -s -X PATCH http://localhost:8080/api/books/4 \
+echo "===== 6. Publisher ID=2의 도서 조회 ====="
+curl -s http://localhost:8080/api/publishers/2/books
+echo
+echo
+
+echo "===== 7. Book ID=1 조회 ====="
+curl -s http://localhost:8080/api/books/1
+echo
+echo
+
+echo "===== 8. ISBN 조회 ====="
+curl -s http://localhost:8080/api/books/isbn/978-0134685991
+echo
+echo
+
+echo "===== 9. 작가 검색 ====="
+curl -s "http://localhost:8080/api/books/search/author?author=Test%20Author"
+echo
+echo
+
+echo "===== 10. 제목 검색 ====="
+curl -s "http://localhost:8080/api/books/search/title?title=Another"
+echo
+echo
+
+
+
+##
+## 2. 테스트 결과
+##
+
+
+
+========================================
+ Spring Boot API 전체 테스트
+========================================
+
+===== 1. 현재 Publisher 전체 조회 =====
+[{"id":2,"name":"O'Reilly Media","establishedDate":"2022-01-01","address":"New Address","bookCount":1},{"id":3,"name":"Manning Publications","establishedDate":"1997-01-01","address":"20 Baldwin Road, Shelter Island, NY","bookCount":1},{"id":1,"name":"Wiley","establishedDate":"1807-01-01","address":"111 River Street, Hoboken, NJ 07030","bookCount":0}]
+
+===== 2. 현재 Book 전체 조회 =====
+[{"id":1,"title":"새로운 제목","author":"김돌쇠","isbn":"923-47-725257-31-3","price":19000,"publishDate":"2025-06-15","publisher":null,"detail":null},{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","publisher":null,"detail":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}},{"id":5,"title":"Another Java Book","author":"Test Author","isbn":"978-0134685991","price":30000,"publishDate":"2023-01-01","publisher":{"id":2,"name":"O'Reilly Media","establishedDate":"2022-01-01","address":"New Address","bookCount":null},"detail":null},{"id":6,"title":"Spring Boot in Action","author":"Craig Walls","isbn":"978-1617292545","price":45000,"publishDate":"2016-01-30","publisher":{"id":3,"name":"Manning Publications","establishedDate":"1997-01-01","address":"20 Baldwin Road, Shelter Island, NY","bookCount":null},"detail":{"id":2,"description":"A developers guide to Spring Boot","language":"English","pageCount":264,"publisher":"Manning Publications","coverImageUrl":"https://example.com/spring-boot-in-action.jpg","edition":"1st Edition"}}]
+
+========================================
+ GET 테스트
+========================================
+
+===== 3. Publisher ID=1 조회 =====
+{"id":1,"name":"Wiley","establishedDate":"1807-01-01","address":"111 River Street, Hoboken, NJ 07030","bookCount":0,"books":[]}
+
+===== 4. Publisher ID=2 조회 =====
+{"id":2,"name":"O'Reilly Media","establishedDate":"2022-01-01","address":"New Address","bookCount":1,"books":[{"id":5,"title":"Another Java Book","author":"Test Author","isbn":"978-0134685991"}]}
+
+===== 5. Publisher 이름 조회 =====
+{"id":2,"name":"O'Reilly Media","establishedDate":"2022-01-01","address":"New Address","bookCount":1,"books":[{"id":5,"title":"Another Java Book","author":"Test Author","isbn":"978-0134685991"}]}
+
+===== 6. Publisher ID=2의 도서 조회 =====
+[{"id":5,"title":"Another Java Book","author":"Test Author","isbn":"978-0134685991"}]
+
+===== 7. Book ID=1 조회 =====
+{"id":1,"title":"새로운 제목","author":"김돌쇠","isbn":"923-47-725257-31-3","price":19000,"publishDate":"2025-06-15","publisher":null,"detail":null}
+
+===== 8. ISBN 조회 =====
+{"id":5,"title":"Another Java Book","author":"Test Author","isbn":"978-0134685991","price":30000,"publishDate":"2023-01-01","publisher":{"id":2,"name":"O'Reilly Media","establishedDate":"2022-01-01","address":"New Address","bookCount":null},"detail":null}
+
+===== 9. 작가 검색 =====
+[{"id":5,"title":"Another Java Book","author":"Test Author","isbn":"978-0134685991","price":30000,"publishDate":"2023-01-01","publisher":{"id":2,"name":"O'Reilly Media","establishedDate":"2022-01-01","address":"New Address","bookCount":null},"detail":null}]
+
+===== 10. 제목 검색 =====
+[{"id":5,"title":"Another Java Book","author":"Test Author","isbn":"978-0134685991","price":30000,"publishDate":"2023-01-01","publisher":{"id":2,"name":"O'Reilly Media","establishedDate":"2022-01-01","address":"New Address","bookCount":null},"detail":null}]
+
+
+
+
+##
+## 2. POST/PUT/DELETE까지 한 번에 테스트
+##
+
+
+
+echo "========================================"
+echo " POST 테스트"
+echo "========================================"
+
+echo
+echo "===== 11. Publisher 생성 ====="
+curl -s -X POST http://localhost:8080/api/publishers \
   -H "Content-Type: application/json" \
   -d '{
-    "price":15000,
-    "detailRequest":{
-      "language":"Korean"
+    "name": "Manning Publications",
+    "establishedDate": "1997-01-01",
+    "address": "20 Baldwin Road, Shelter Island, NY"
+  }'
+echo
+echo
+
+echo "===== 12. 생성된 Publisher 전체 조회 ====="
+curl -s http://localhost:8080/api/publishers
+echo
+echo
+
+echo "===== 13. Book 생성 ====="
+curl -s -X POST http://localhost:8080/api/books \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Spring Boot in Action",
+    "author": "Craig Walls",
+    "isbn": "978-1617292545",
+    "price": 45000,
+    "publishDate": "2016-01-30",
+    "publisherId": 3,
+    "detailRequest": {
+      "description": "A developers guide to Spring Boot",
+      "language": "English",
+      "pageCount": 264,
+      "publisher": "Manning Publications",
+      "coverImageUrl": "https://example.com/spring-boot-in-action.jpg",
+      "edition": "1st Edition"
     }
   }'
-echo ""
+echo
+echo
 
-# 8. BookDetail 부분 수정
-# PATCH /api/books/4/detail
-# → BookDetail의 description만 변경
-echo ""
-echo "===== 8. BookDetail PATCH - 설명만 수정 ====="
-curl -s -X PATCH http://localhost:8080/api/books/4/detail \
+
+echo "========================================"
+echo " 중복 / 예외 테스트"
+echo "========================================"
+
+echo
+echo "===== 14. 중복 Publisher 테스트 ====="
+curl -s -i -X POST http://localhost:8080/api/publishers \
   -H "Content-Type: application/json" \
-  -d '{"description":"새로운 책 설명"}'
-echo ""
+  -d '{
+    "name": "Wiley",
+    "establishedDate": "1807-01-01",
+    "address": "Duplicate Address"
+  }'
+echo
+echo
 
-# 9. 최종 조회
-# → PATCH 결과가 실제로 반영되었는지 확인
-echo ""
-echo "===== 9. 최종 결과 확인 ====="
-curl -s http://localhost:8080/api/books/4
-echo ""
+echo "===== 15. 중복 ISBN 테스트 ====="
+curl -s -i -X POST http://localhost:8080/api/books \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Duplicate ISBN Book",
+    "author": "Test Author",
+    "isbn": "978-0134685991",
+    "price": 30000,
+    "publishDate": "2023-01-01",
+    "publisherId": 2
+  }'
+echo
+echo
 
-# 10. DB 데이터 확인
-# → Book과 BookDetail의 1:1 관계 확인
-echo ""
-echo "===== 테스트 완료 ====="
+echo "===== 16. 존재하지 않는 Publisher ====="
+curl -s -i -X POST http://localhost:8080/api/books \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Test Book",
+    "author": "Test Author",
+    "isbn": "978-9999999999",
+    "price": 25000,
+    "publishDate": "2023-01-01",
+    "publisherId": 999
+  }'
+echo
+echo
 
-===== 1. 전체 도서 조회 =====
-[{"id":1,"title":"새로운 제목","author":"김돌쇠","isbn":"923-47-725257-31-3","price":19000,"publishDate":"2025-06-15","detailResponse":null},{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}]
+echo "===== 17. Validation 테스트 ====="
+curl -s -i -X POST http://localhost:8080/api/books \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "",
+    "author": "",
+    "isbn": "invalid-isbn",
+    "price": -100,
+    "publishDate": "2025-12-31",
+    "publisherId": null
+  }'
+echo
+echo
 
-===== 2. ID로 도서 조회 =====
-{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
 
-===== 3. ISBN으로 도서 조회 =====
-{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
+echo "========================================"
+echo " 존재하지 않는 데이터 테스트"
+echo "========================================"
 
-===== 4. 저자로 도서 검색 =====
-[{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}]
+echo
+echo "===== 18. 존재하지 않는 Publisher ID=999 ====="
+curl -s -i http://localhost:8080/api/publishers/999
+echo
+echo
 
-===== 5. 제목으로 도서 검색 =====
-[{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}]
+echo "===== 19. 존재하지 않는 Book ID=999 ====="
+curl -s -i http://localhost:8080/api/books/999
+echo
+echo
 
-===== 6. Book PATCH - 제목만 수정 =====
-{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
 
-===== 7. Book PATCH - 가격 + 언어 수정 =====
-{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
+echo "========================================"
+echo " 최종 데이터 확인"
+echo "========================================"
 
-===== 8. BookDetail PATCH - 설명만 수정 =====
-{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
+echo
+echo "===== 20. 최종 Publisher ====="
+curl -s http://localhost:8080/api/publishers
+echo
+echo
 
-===== 9. 최종 결과 확인 =====
-{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","detailResponse":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}}
+echo "===== 21. 최종 Book ====="
+curl -s http://localhost:8080/api/books
+echo
+echo
 
-===== 테스트 완료 =====
+echo "========================================"
+echo " 테스트 완료"
+echo "========================================"
+
+
+
+##
+## 3. POST/PUT/DELETE까지 한 번에 테스트
+##
+
+
+
+========================================
+ POST 테스트
+========================================
+
+===== 11. Publisher 생성 =====
+{"status":409,"message":"Publisher already exists with name: Manning Publications"}
+
+===== 12. 생성된 Publisher 전체 조회 =====
+[{"id":2,"name":"O'Reilly Media","establishedDate":"2022-01-01","address":"New Address","bookCount":1},{"id":3,"name":"Manning Publications","establishedDate":"1997-01-01","address":"20 Baldwin Road, Shelter Island, NY","bookCount":1},{"id":1,"name":"Wiley","establishedDate":"1807-01-01","address":"111 River Street, Hoboken, NJ 07030","bookCount":0}]
+
+===== 13. Book 생성 =====
+{"status":409,"message":"Book already exists with ISBN: 978-1617292545"}
+
+========================================
+ 중복 / 예외 테스트
+========================================
+
+===== 14. 중복 Publisher 테스트 =====
+HTTP/1.1 409
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 14 Sep 2026 01:14:45 GMT
+
+{"status":409,"message":"Publisher already exists with name: Wiley"}
+
+===== 15. 중복 ISBN 테스트 =====
+HTTP/1.1 409
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 14 Sep 2026 01:14:45 GMT
+
+{"status":409,"message":"Book already exists with ISBN: 978-0134685991"}
+
+===== 16. 존재하지 않는 Publisher =====
+HTTP/1.1 404
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 14 Sep 2026 01:14:45 GMT
+
+{"status":404,"message":"Publisher not found with id: 999"}
+
+===== 17. Validation 테스트 =====
+HTTP/1.1 400
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 14 Sep 2026 01:14:45 GMT
+Connection: close
+
+{"status":400,"message":"입력값이 올바르지 않습니다.","errors":{"isbn":"ISBN must be valid (10 or 13 digits, with or without hyphens)","publisherId":"Publisher ID is required","title":"Book title is required","price":"Price must be positive or zero","author":"Author name is required"}}
+
+========================================
+ 존재하지 않는 데이터 테스트
+========================================
+
+===== 18. 존재하지 않는 Publisher ID=999 =====
+HTTP/1.1 404
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 14 Sep 2026 01:14:45 GMT
+
+{"status":404,"message":"Publisher not found with id: 999"}
+
+===== 19. 존재하지 않는 Book ID=999 =====
+HTTP/1.1 404
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 14 Sep 2026 01:14:45 GMT
+
+{"status":404,"message":"Book not found with id: 999"}
+
+========================================
+ 최종 데이터 확인
+========================================
+
+===== 20. 최종 Publisher =====
+[{"id":2,"name":"O'Reilly Media","establishedDate":"2022-01-01","address":"New Address","bookCount":1},{"id":3,"name":"Manning Publications","establishedDate":"1997-01-01","address":"20 Baldwin Road, Shelter Island, NY","bookCount":1},{"id":1,"name":"Wiley","establishedDate":"1807-01-01","address":"111 River Street, Hoboken, NJ 07030","bookCount":0}]
+
+===== 21. 최종 Book =====
+[{"id":1,"title":"새로운 제목","author":"김돌쇠","isbn":"923-47-725257-31-3","price":19000,"publishDate":"2025-06-15","publisher":null,"detail":null},{"id":4,"title":"Clean Code 수정본","author":"Robert C. Martin","isbn":"9780132350884","price":15000,"publishDate":"2008-08-01","publisher":null,"detail":{"id":1,"description":"새로운 책 설명","language":"Korean","pageCount":464,"publisher":"Prentice Hall","coverImageUrl":"https://example.com/cleancode.jpg","edition":"1st"}},{"id":5,"title":"Another Java Book","author":"Test Author","isbn":"978-0134685991","price":30000,"publishDate":"2023-01-01","publisher":{"id":2,"name":"O'Reilly Media","establishedDate":"2022-01-01","address":"New Address","bookCount":null},"detail":null},{"id":6,"title":"Spring Boot in Action","author":"Craig Walls","isbn":"978-1617292545","price":45000,"publishDate":"2016-01-30","publisher":{"id":3,"name":"Manning Publications","establishedDate":"1997-01-01","address":"20 Baldwin Road, Shelter Island, NY","bookCount":null},"detail":{"id":2,"description":"A developers guide to Spring Boot","language":"English","pageCount":264,"publisher":"Manning Publications","coverImageUrl":"https://example.com/spring-boot-in-action.jpg","edition":"1st Edition"}}]
+
+========================================
+ 테스트 완료
+========================================
+
+

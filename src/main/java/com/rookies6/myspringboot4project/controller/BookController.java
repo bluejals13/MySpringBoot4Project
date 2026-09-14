@@ -1,6 +1,8 @@
 package com.rookies6.myspringboot4project.controller;
 
 import com.rookies6.myspringboot4project.dto.BookDTO;
+import com.rookies6.myspringboot4project.dto.BookDetailDTO;
+
 import com.rookies6.myspringboot4project.service.BookService;
 
 import jakarta.validation.Valid;
@@ -129,6 +131,36 @@ public class BookController {
                 bookService.updateBook(id, request)
         );
     }
+
+
+        // =========================
+        // 부분 수정
+        // =========================
+        @PatchMapping("/{id}")
+        public ResponseEntity<BookDTO.Response> patchBook(
+                @PathVariable Long id,
+                @Valid @RequestBody BookDTO.PatchRequest request
+        ) {
+        return ResponseEntity.ok(
+                bookService.patchBook(id, request)
+        );
+        }
+
+
+        // =========================
+        // BookDetail 부분 수정
+        // =========================
+        @PatchMapping("/{id}/detail")
+        public ResponseEntity<BookDTO.Response> patchBookDetail(
+                @PathVariable Long id,
+                @Valid @RequestBody BookDetailDTO.PatchRequest request
+        ) {
+        return ResponseEntity.ok(
+                bookService.patchBookDetail(id, request)
+        );
+        }
+
+
 
 
     // =========================

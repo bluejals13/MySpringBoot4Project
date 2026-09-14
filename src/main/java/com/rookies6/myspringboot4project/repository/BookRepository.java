@@ -29,14 +29,15 @@ public interface BookRepository
     );
 
     @Query("""
-        SELECT b
-        FROM Book b
-        JOIN FETCH b.bookDetail
-        WHERE b.isbn = :isbn
-        """)
+    SELECT b
+    FROM Book b
+    LEFT JOIN FETCH b.bookDetail
+    WHERE b.isbn = :isbn
+    """)
     Optional<Book> findByIsbnWithBookDetail(
             @Param("isbn") String isbn
     );
+
 
     @Query("""
         SELECT b

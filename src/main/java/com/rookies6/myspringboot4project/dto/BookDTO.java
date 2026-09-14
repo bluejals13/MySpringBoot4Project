@@ -125,4 +125,32 @@ public class BookDTO {
         private String coverImageUrl;
         private String edition;
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class PatchRequest {
+
+        @Size(max = 255, message = "Title must be less than 255 characters")
+        private String title;
+
+        @Size(max = 255, message = "Author must be less than 255 characters")
+        private String author;
+
+        @Pattern(
+                regexp = "^(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+$",
+                message = "ISBN must be valid (10 or 13 digits, with or without hyphens)"
+        )
+        private String isbn;
+
+        @PositiveOrZero(message = "Price must be positive or zero")
+        private Integer price;
+
+        @PastOrPresent(message = "Publish date cannot be in the future")
+        private LocalDate publishDate;
+
+        private Long publisherId;
+    }
+
 }

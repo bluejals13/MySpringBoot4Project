@@ -269,10 +269,9 @@ public class BookService {
     // Book PATCH
     // =========================
     public BookDTO.Response patchBook(
-            Long id,
-            BookDTO.Request request
-    ) {
-
+        Long id,
+        BookDTO.PatchRequest request
+        ) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() ->
                         new BusinessException(
@@ -283,70 +282,64 @@ public class BookService {
                         )
                 );
 
-        // ISBN
         if (request.getIsbn() != null) {
 
-            if (bookRepository.existsByIsbnAndIdNot(
-                    request.getIsbn(),
-                    id
-            )) {
+                if (bookRepository.existsByIsbnAndIdNot(
+                        request.getIsbn(),
+                        id
+                )) {
                 throw new BusinessException(
                         ErrorCode.ISBN_DUPLICATE,
                         request.getIsbn()
                 );
-            }
+                }
 
-            book.setIsbn(request.getIsbn());
+                book.setIsbn(request.getIsbn());
         }
 
-        // 제목
         if (request.getTitle() != null) {
-            book.setTitle(request.getTitle());
+                book.setTitle(request.getTitle());
         }
 
-        // 저자
         if (request.getAuthor() != null) {
-            book.setAuthor(request.getAuthor());
+                book.setAuthor(request.getAuthor());
         }
 
-        // 가격
         if (request.getPrice() != null) {
-            book.setPrice(request.getPrice());
+                book.setPrice(request.getPrice());
         }
 
-        // 출판일
         if (request.getPublishDate() != null) {
-            book.setPublishDate(request.getPublishDate());
+                book.setPublishDate(request.getPublishDate());
         }
 
-        // Publisher
         if (request.getPublisherId() != null) {
+                Publisher publisher = publisherRepository.findById(
+                        request.getPublisherId()
+                ).orElseThrow(() ->
+                        new BusinessException(
+                                ErrorCode.RESOURCE_NOT_FOUND,
+                                "Publisher",
+                                "id",
+                                request.getPublisherId()
+                        )
+                );
 
-            Publisher publisher = publisherRepository.findById(
-                    request.getPublisherId()
-            ).orElseThrow(() ->
-                    new BusinessException(
-                            ErrorCode.RESOURCE_NOT_FOUND,
-                            "Publisher",
-                            "id",
-                            request.getPublisherId()
-                    )
-            );
-
-            book.changePublisher(publisher);
+                book.changePublisher(publisher);
         }
 
         return BookDTO.Response.fromEntity(book);
-    }
+        }
+
 
 
     // =========================
     // BookDetail PATCH
     // =========================
-    public BookDTO.Response patchBookDetail(
-            Long id,
-            BookDetailDTO request
-    ) {
+        public BookDTO.Response patchBookDetail(
+                Long id,
+                BookDetailDTO.PatchRequest request
+        ) {
 
         Book book = bookRepository.findByIdWithAllDetails(id)
                 .orElseThrow(() ->

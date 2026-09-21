@@ -25,12 +25,14 @@ public class UserController {
         model.addAttribute("name","스프링부트");
         return "leaf";
     }
+    
     /*
         public ModelAndView(String viewName, String modelName, Object modelObject)
      */
     @GetMapping("/index")
     public ModelAndView userList() {
         List<User> userList = userRepository.findAll();
+        // 에러를 유발하던 코드를 삭제했습니다.
         return new ModelAndView("index","users",userList);
     }
 
@@ -72,6 +74,4 @@ public class UserController {
         userRepository.save(user);
         return "redirect:/index";
     }
-
-
 }

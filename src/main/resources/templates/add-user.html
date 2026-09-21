@@ -1,41 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-      <meta charset="UTF-8">
-      <title>학생 등록</title>
-</head>
-
+<meta charset="UTF-8">
 <body>
-
-      <h2>학생 등록</h2>
-
-      <form th:action="@{/adduser}" th:object="${studentForm}" method="post">
-
-            <label for="name">이름</label>
-            <input type="text" id="name" th:field="*{name}">
-
-            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
-            </span>
-
-            <br />
-
-            <label for="studentNumber">학번</label>
-            <input type="text" id="studentNumber" th:field="*{studentNumber}">
-
-            <span th:if="${#fields.hasErrors('studentNumber')}" th:errors="*{studentNumber}">
-            </span>
-
-            <br />
-
-            <button type="submit">학생 등록</button>
-
-      </form>
-
-      <p>
-            <a th:href="@{/}">목록으로</a>
-      </p>
-
+<h2>User Form</h2>
+<form action="#" th:action="@{/adduser}" th:object="${userForm}" method="post">
+    <label for="name">Name</label>
+    <!--th:field => id="name", name="name" value="" -->
+    <input type="text" th:field="*{name}" id="name">
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <br/>
+    <label for="email">Email</label>
+    <input type="text" th:field="*{email}" id="email">
+    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+    <br/>
+    <input type="submit" value="Add User">
+</form>
 </body>
-
 </html>
